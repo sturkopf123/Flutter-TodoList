@@ -1,4 +1,5 @@
 import 'package:todo_v2/TodoViewModel.dart';
+import 'package:todo_v2/database.dart';
 
 import 'Todo.dart';
 import 'dart:async';
@@ -14,28 +15,28 @@ class TodoBloc{
   Sink<Todo> get addTodo => addTodoController.sink;
 
   TodoBloc(){
-    //addTodoController.stream.listen(onAddPerson);
+    addTodoController.stream.listen(onAddPerson);
     initialize();
   }
 
   void onAddPerson(Todo event){
-    //TodoDatabase db = TodoDatabase.get();
-    //db.insertTodo(event);
+    TodoDatabase db = TodoDatabase.get();
+    db.insertTodo(event);
     _todos.add(event);
-    print("dndjfdjff ${_todos.length}");
     todoListController.add(_todos);
+    print("aaktl laenge ${_todos.length}");
   }
 
   void initialize(){
     todoListController.add(getTodos());
+    //addTodoController.stream.listen(onAddPerson);
   }
 
   List<Todo> getTodos(){
-    //TodoDatabase db = TodoDatabase.get();
-    _todos = TodoViewModel().todoList;
-    //db.getAllTodos().then((data){
-    //  _todos = data;
-    //});
+    TodoDatabase db = TodoDatabase.get();
+    db.getAllTodos().then((data){
+      _todos = data;
+    });
     return _todos;
   }
 }

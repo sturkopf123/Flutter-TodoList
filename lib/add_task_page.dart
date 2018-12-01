@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todo_v2/Todo.dart';
+import 'package:todo_v2/TodoBlocProvider.dart';
+import 'package:todo_v2/database.dart';
 import 'package:todo_v2/datetimepicker.dart';
+import 'package:todo_v2/todo_bloc.dart';
+import 'package:uuid/uuid.dart';
 
 class NewTodoPage extends StatefulWidget {
   @override
@@ -17,8 +22,6 @@ class _NewTodoPageState extends State<NewTodoPage> {
 
   @override
   Widget build(BuildContext context) {
-
-
     return Container(
       child: Scaffold(
         appBar: AppBar(
@@ -128,7 +131,16 @@ class _NewTodoPageState extends State<NewTodoPage> {
           ),
           FlatButton(
             onPressed: (){
-
+              DateTime _datetime = new DateTime(_toDate.year, _toDate.month, _toDate.day, _toTime.hour, _toTime.minute);
+              Todo todo = Todo(
+                  uuid: Uuid().v1(),
+                  title: titleController.text,
+                  description: descriptionController.text,
+                  dateExpire: _datetime.toString(),
+                  dateNotification: _datetime.toString(),
+                  notification: "false",
+                  tag: "0");
+                  _addTodo(todo);
               Navigator.pop(context, true);
             },
             child: Text("Hinzufügen"),
@@ -136,6 +148,11 @@ class _NewTodoPageState extends State<NewTodoPage> {
         ],
       ),
     );
+  }
+
+  void _addTodo(Todo todo){
+    final todoBloc = TodoBlocProvider.of(context);
+    todoBloc.addTodoController.add(todo);
   }
 
 }

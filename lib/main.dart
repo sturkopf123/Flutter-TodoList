@@ -62,15 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Icon(Icons.add),
             onPressed: (){
               Navigator.push(context, MaterialPageRoute(builder: (context) => NewTodoPage()));
-              Todo test = Todo(
-                  uuid: Uuid().v4(),
-                  title: "1454",
-                  description: "test",
-                  dateExpire: "blal",
-                  dateNotification: "bdd",
-                  notification: "false",
-                  tag: "0");
-              todoBloc.onAddPerson(test);
             }),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         bottomNavigationBar: BottomAppBar(
