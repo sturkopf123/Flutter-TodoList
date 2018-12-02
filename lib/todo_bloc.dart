@@ -5,7 +5,6 @@ import 'Todo.dart';
 import 'dart:async';
 
 class TodoBloc{
-
   List<Todo> _todos = [];
 
   final todoListController = StreamController<List<Todo>>();
@@ -15,8 +14,8 @@ class TodoBloc{
   Sink<Todo> get addTodo => addTodoController.sink;
 
   TodoBloc(){
-    addTodoController.stream.listen(onAddPerson);
     initialize();
+    addTodoController.stream.listen(onAddPerson);
   }
 
   void onAddPerson(Todo event){
@@ -27,16 +26,12 @@ class TodoBloc{
     print("aaktl laenge ${_todos.length}");
   }
 
-  void initialize(){
-    todoListController.add(getTodos());
-    //addTodoController.stream.listen(onAddPerson);
+  void initialize() async{
+    todoListController.add(await getTodos());
   }
 
-  List<Todo> getTodos(){
+  Future<List<Todo>> getTodos(){
     TodoDatabase db = TodoDatabase.get();
-    db.getAllTodos().then((data){
-      _todos = data;
-    });
-    return _todos;
+    return db.getAllTodos();
   }
 }
