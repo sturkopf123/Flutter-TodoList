@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:todo_v2/TodoBlocProvider.dart';
-import 'package:todo_v2/TodoViewModel.dart';
+//import 'package:todo_v2/TodoViewModel.dart';
 import 'package:todo_v2/add_task_page.dart';
-import 'package:todo_v2/database.dart';
+//import 'package:todo_v2/database.dart';
 import 'package:todo_v2/listview.dart';
 import 'package:todo_v2/todo_bloc.dart';
-import 'package:uuid/uuid.dart';
-import 'Todo.dart';
+//import 'package:uuid/uuid.dart';
+//import 'Todo.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: TodoBlocProvider(
-        todoBloc: TodoBloc(),
-        child: MyHomePage(title: 'Flutter Demo Home Page'),
+    return TodoBlocProvider(
+      todoBloc: TodoBloc(),
+      child:  MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
+
+
+
   }
 }
 
@@ -36,13 +39,13 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _index = 0;
+//  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
     final todoBloc = TodoBlocProvider.of(context);
     return Scaffold(
-      backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.blueGrey,
         appBar: AppBar(
           title: Text(widget.title),
         ),
