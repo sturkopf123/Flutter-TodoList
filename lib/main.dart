@@ -44,46 +44,40 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final todoBloc = TodoBlocProvider.of(context);
-    return Scaffold(
-        backgroundColor: Colors.blueGrey,
-        appBar: AppBar(
-          title: Text(widget.title),
-        ),
-        body: StreamBuilder(
-            stream: todoBloc.todoList,
-            builder: (BuildContext context, snapData) {
-              if (snapData.hasData) {
-                print("hasdata ${snapData.data.length}");
-                return CustomListView(todos: snapData.data);
-              } else {
-                return Container(
-                  child: Text("nodata"),
-                );
-              }
-            }),
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => NewTodoPage()));
-            }),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        bottomNavigationBar: BottomAppBar(
-          shape: CircularNotchedRectangle(),
-          notchMargin: 4.0,
-          child: Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.event),
-                onPressed: (){},
-              ),
-              IconButton(
-                  icon: Icon(Icons.event_available),
-                  onPressed: (){})
-            ],
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+          backgroundColor: Colors.blueGrey,
+          appBar: AppBar(
+            bottom: TabBar(tabs: [
+              Tab(icon: Icon(Icons.event),),
+              Tab(icon: Icon(Icons.event_available))
+            ]),
+            title: Text(widget.title),
           ),
-        )
+          body: TabBarView(children: [
+            StreamBuilder(
+                stream: todoBloc.todoList,
+                builder: (BuildContext context, snapData) {
+                  if (snapData.hasData) {
+                    print("hasdata ${snapData.data.length}");
+                    return CustomListView(todos: snapData.data);
+                  } else {
+                    return Container(
+                      child: Text("nodata"),
+                    );
+                  }
+                }),
+            Center(
+              child: Text("test"),
+            )
+          ]),
+          floatingActionButton: FloatingActionButton(
+              child: Icon(Icons.add),
+              onPressed: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context) => NewTodoPage()));
+              }),
+      ),
     );
   }
 }
