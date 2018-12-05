@@ -1,8 +1,7 @@
-import 'package:todo_v2/TodoViewModel.dart';
-import 'package:todo_v2/database.dart';
-
-import 'Todo.dart';
 import 'dart:async';
+
+import 'package:todo_v2/database/database.dart';
+import 'package:todo_v2/model/Todo.dart';
 
 class TodoBloc{
   List<Todo> _todos = [];
@@ -18,12 +17,16 @@ class TodoBloc{
     addTodoController.stream.listen(onAddPerson);
   }
 
+  void dispose() {
+    todoListController.close();
+    addTodoController.close();
+  }
+
   void onAddPerson(Todo event){
     TodoDatabase db = TodoDatabase.get();
     db.insertTodo(event);
     _todos.add(event);
     todoListController.add(_todos);
-    print("aaktl laenge ${_todos.length}");
   }
 
   void initialize() async{

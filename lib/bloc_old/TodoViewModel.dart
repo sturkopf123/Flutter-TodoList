@@ -1,4 +1,4 @@
-import 'Todo.dart';
+import 'package:todo_v2/model/Todo.dart';
 import 'package:uuid/uuid.dart';
 
 class TodoViewModel{

@@ -1,9 +1,10 @@
 import 'dart:async';
 import 'dart:io';
+
 import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
-import 'Todo.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:todo_v2/model/Todo.dart';
 
 class TodoDatabase {
   static final TodoDatabase _todoDatabase = new TodoDatabase._internal();

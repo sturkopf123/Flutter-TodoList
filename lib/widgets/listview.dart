@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
-import 'package:intl/intl.dart';
-import 'package:todo_v2/Todo.dart';
-import 'package:todo_v2/TodoBlocProvider.dart';
+import 'package:flutter/material.dart';
+import 'package:todo_v2/model/Todo.dart';
 
 class CustomListView extends StatefulWidget {
   final List<Todo> todos;
