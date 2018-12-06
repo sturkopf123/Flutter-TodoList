@@ -31,7 +31,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   TodoBloc todoBloc = TodoBloc();
 
   @override
@@ -60,44 +59,59 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         body: TabBarView(children: [
           StreamBuilder(
-              stream: todoBloc.items,
+              stream: todoBloc.itemsPending,
               builder: (BuildContext context, snapData) {
                 if (snapData.hasData && snapData.data.length != 0) {
-                  return getListView(snapData.data, context, todoBloc);
+                  return CustomListView(
+                    items: snapData.data,
+                    todoBloc: todoBloc,
+                  );
                 } else {
                   return Center(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.done_all, size: 100.0,),
-                        ],
-                      )
-                  );
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.done_all,
+                        size: 100.0,
+                      ),
+                    ],
+                  ));
                 }
               }),
           StreamBuilder(
-              stream: todoBloc.items,
+              stream: todoBloc.itemsDone,
               builder: (BuildContext context, snapData) {
                 if (snapData.hasData && snapData.data.length != 0) {
-                  return getListView(snapData.data, context, todoBloc);
+                  return CustomListView(
+                    items: snapData.data,
+                    todoBloc: todoBloc,
+                  );
                 } else {
                   return Center(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(Icons.done_all, size: 100.0,),
-                        ],
-                      ));
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.done_all,
+                        size: 100.0,
+                      ),
+                    ],
+                  ));
                 }
               })
         ]),
         floatingActionButton: FloatingActionButton(
             child: Icon(Icons.add),
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => NewTodoPage(todoBloc: todoBloc,)));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NewTodoPage(
+                            todoBloc: todoBloc,
+                          )));
             }),
       ),
     );

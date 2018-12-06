@@ -6,55 +6,112 @@ import 'package:todo_v2/model/Todo.dart';
 import 'package:todo_v2/algorithms/quicksort.dart';
 
 class TodoBloc {
-
   TodoBloc() {
-    _additionStreamController.stream.listen(_handleAddition);
-    _removalStreamController.stream.listen(_handleRemoval);
+    _additionPendingStreamController.stream.listen(_handleAdditionPending);
+    _removalPendingStreamController.stream.listen(_handleRemovalPending);
+    _changePendingStreamController.stream.listen(_handleChangePending);
+
+    _additionDoneStreamController.stream.listen(_handleAdditionDone);
+    _removalDoneStreamController.stream.listen(_handleRemovalDone);
+
     initialize();
   }
 
-  _handleAddition(Todo item) async{
+  _handleChangePending(Todo todo) async {
     TodoDatabase db = TodoDatabase.get();
-    List<Todo> _temp = await db.getAllTodos();
+    Todo _temp = todo;
+    _temp.tag = "1";
+    await db.updatetodo(todo);
+    initialize();
+  }
+
+  _handleAdditionPending(Todo item) async {
+    TodoDatabase db = TodoDatabase.get();
+    List<Todo> _temp = await db.getDoneTodos();
     _temp.add(item);
     _temp = quickSort(_temp);
-    _itemsSubject.add(quickSort(_temp));
+    _itemsPendingSubject.add(quickSort(_temp));
     db.insertTodo(item);
   }
 
-  _handleRemoval(Todo item) async{
+  _handleRemovalPending(Todo item) async {
     TodoDatabase db = TodoDatabase.get();
-    db.deleteTodo(item);
-    List<Todo> _temp = await db.getAllTodos();
+    await db.deleteTodo(item);
+    List<Todo> _temp = await db.getPendingTodos();
     _temp = quickSort(_temp);
-    _itemsSubject.add(_temp);
+    _itemsPendingSubject.add(_temp);
   }
 
-  void dropTable(){
+  _handleAdditionDone(Todo item) async {
+    TodoDatabase db = TodoDatabase.get();
+    List<Todo> _temp = await db.getDoneTodos();
+    _temp.add(item);
+    _temp = quickSort(_temp);
+    _itemsDoneSubject.add(quickSort(_temp));
+    db.insertTodo(item);
+  }
+
+  _handleRemovalDone(Todo item) async {
+    TodoDatabase db = TodoDatabase.get();
+    await db.deleteTodo(item);
+    List<Todo> _temp = await db.getDoneTodos();
+    _temp = quickSort(_temp);
+    _itemsDoneSubject.add(_temp);
+  }
+
+  void dropTable() {
     List<Todo> _temp = List<Todo>();
-    _itemsSubject.add(_temp);
+    _itemsDoneSubject.add(_temp);
+    _itemsPendingSubject.add(_temp);
   }
 
   void dispose() {
-    _additionStreamController.close();
-    _removalStreamController.close();
+    _additionDoneStreamController.close();
+    _removalDoneStreamController.close();
+    _additionPendingStreamController.close();
+    _removalPendingStreamController.close();
+    _changePendingStreamController.close();
   }
 
-  Stream<List<Todo>> get items => _itemsSubject.stream;
-  final _itemsSubject = BehaviorSubject<List<Todo>>();
+  //Bloc things for done todos
+  Stream<List<Todo>> get itemsDone => _itemsDoneSubject.stream;
+  final _itemsDoneSubject = BehaviorSubject<List<Todo>>();
 
-  Sink<Todo> get addition => _additionStreamController.sink;
-  final _additionStreamController = StreamController<Todo>();
+  Sink<Todo> get additionDone => _additionDoneStreamController.sink;
+  final _additionDoneStreamController = StreamController<Todo>();
 
-  Sink<Todo> get removal => _removalStreamController.sink;
-  final _removalStreamController = StreamController<Todo>();
+  Sink<Todo> get removalDone => _removalDoneStreamController.sink;
+  final _removalDoneStreamController = StreamController<Todo>();
+
+  //Bloc things for pending todos
+  Stream<List<Todo>> get itemsPending => _itemsPendingSubject.stream;
+  final _itemsPendingSubject = BehaviorSubject<List<Todo>>();
+
+  Sink<Todo> get additionPending => _additionPendingStreamController.sink;
+  final _additionPendingStreamController = StreamController<Todo>();
+
+  Sink<Todo> get changePending => _changePendingStreamController.sink;
+  final _changePendingStreamController = StreamController<Todo>();
+
+  Sink<Todo> get removalPending => _removalPendingStreamController.sink;
+  final _removalPendingStreamController = StreamController<Todo>();
 
   void initialize() async {
-    _itemsSubject.add(quickSort(await getTodos()));
+    List<Todo> _pen = await getPendingTodos();
+    print("pending: ${_pen.length}");
+    List<Todo> _don = await getDoneTodos();
+    print("done: ${_don.length}");
+    _itemsDoneSubject.add(quickSort(_don));
+    _itemsPendingSubject.add(quickSort(_pen));
   }
 
-  Future<List<Todo>> getTodos() {
+  Future<List<Todo>> getPendingTodos() {
     TodoDatabase db = TodoDatabase.get();
-    return db.getAllTodos();
+    return db.getPendingTodos();
+  }
+
+  Future<List<Todo>> getDoneTodos() {
+    TodoDatabase db = TodoDatabase.get();
+    return db.getDoneTodos();
   }
 }
