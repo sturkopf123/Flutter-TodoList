@@ -13,15 +13,25 @@ class TodoBloc {
     initialize();
   }
 
-  _handleAddition(Todo item) {
-    print("${item.title} addition");
-    _itemsSubject.add(_items..add(item));
+  _handleAddition(Todo item) async{
     TodoDatabase db = TodoDatabase.get();
+    List<Todo> _temp = await db.getAllTodos();
+    _temp.add(item);
+    _itemsSubject.add(_temp);
     db.insertTodo(item);
   }
 
-  _handleRemoval(Todo item) {
-    _itemsSubject.add(_items..remove(item));
+  _handleRemoval(Todo item) async{
+    TodoDatabase db = TodoDatabase.get();
+    List<Todo> _temp = await db.getAllTodos();
+    _temp.remove(item);
+    _itemsSubject.add(_temp);
+    db.deleteTodo(item);
+  }
+
+  void dropTable(){
+    List<Todo> _temp = List<Todo>();
+    _itemsSubject.add(_temp);
   }
 
   void dispose() {
