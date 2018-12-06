@@ -3,7 +3,7 @@ import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/bloc/todoProvider.dart';
 import 'package:todo_v2/database/database.dart';
 import 'package:todo_v2/pages/add_task_page.dart';
-import 'package:todo_v2/widgets/listview.dart';
+import 'package:todo_v2/widgets/listView.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,9 +14,7 @@ class MyApp extends StatelessWidget {
       todoBloc: TodoBloc(),
       child: MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: ThemeData.dark(),
         home: MyHomePage(title: 'Flutter Demo Home Page'),
       ),
     );
@@ -41,7 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.white30,
         appBar: AppBar(
           actions: <Widget>[
             IconButton(
@@ -54,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
           bottom: TabBar(tabs: [
             Tab(
-              icon: Icon(Icons.event),
+              icon: Icon(Icons.date_range),
             ),
             Tab(icon: Icon(Icons.event_available))
           ]),
@@ -64,19 +62,34 @@ class _MyHomePageState extends State<MyHomePage> {
           StreamBuilder(
               stream: todoBloc.items,
               builder: (BuildContext context, snapData) {
-                if (snapData.hasData) {
-                  return CustomListView(todos: snapData.data);
+                if (snapData.hasData && snapData.data.length != 0) {
+                  return getListView(snapData.data, context, todoBloc);
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.done_all, size: 100.0,),
+                        ],
+                      )
+                  );
                 }
               }),
           StreamBuilder(
               stream: todoBloc.items,
               builder: (BuildContext context, snapData) {
-                if (snapData.hasData) {
-                  return CustomListView(todos: snapData.data);
+                if (snapData.hasData && snapData.data.length != 0) {
+                  return getListView(snapData.data, context, todoBloc);
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(Icons.done_all, size: 100.0,),
+                        ],
+                      ));
                 }
               })
         ]),

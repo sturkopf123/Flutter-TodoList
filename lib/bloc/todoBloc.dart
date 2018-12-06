@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 import 'package:todo_v2/database/database.dart';
 import 'package:todo_v2/model/Todo.dart';
+import 'package:todo_v2/algorithms/quicksort.dart';
 
 class TodoBloc {
-  final List<Todo> _items = List<Todo>();
 
   TodoBloc() {
     _additionStreamController.stream.listen(_handleAddition);
@@ -17,16 +17,17 @@ class TodoBloc {
     TodoDatabase db = TodoDatabase.get();
     List<Todo> _temp = await db.getAllTodos();
     _temp.add(item);
-    _itemsSubject.add(_temp);
+    _temp = quickSort(_temp);
+    _itemsSubject.add(quickSort(_temp));
     db.insertTodo(item);
   }
 
   _handleRemoval(Todo item) async{
     TodoDatabase db = TodoDatabase.get();
-    List<Todo> _temp = await db.getAllTodos();
-    _temp.remove(item);
-    _itemsSubject.add(_temp);
     db.deleteTodo(item);
+    List<Todo> _temp = await db.getAllTodos();
+    _temp = quickSort(_temp);
+    _itemsSubject.add(_temp);
   }
 
   void dropTable(){
@@ -49,7 +50,7 @@ class TodoBloc {
   final _removalStreamController = StreamController<Todo>();
 
   void initialize() async {
-    _itemsSubject.add(await getTodos());
+    _itemsSubject.add(quickSort(await getTodos()));
   }
 
   Future<List<Todo>> getTodos() {

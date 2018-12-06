@@ -48,4 +48,8 @@ class Todo {
       dbTag: tag
     };
   }
+
+  String toString(){
+    return "title: $title, dateExpire: $dateExpire, dateNotification: $dateNotification";
+  }
 }

@@ -136,14 +136,15 @@ class _NewTodoPageState extends State<NewTodoPage> {
             ),
             FlatButton(
               onPressed: (){
-                DateTime _datetime = new DateTime(_toDate.year, _toDate.month, _toDate.day, _toTime.hour, _toTime.minute);
+                String _datetime = new DateTime(_toDate.year, _toDate.month, _toDate.day, _toTime.hour, _toTime.minute).toString();
+                print(_datetime);
                 Todo todo = Todo(
                     uuid: Uuid().v1(),
                     title: titleController.text,
                     description: descriptionController.text,
-                    dateExpire: _datetime.toString(),
-                    dateNotification: _datetime.toString(),
-                    notification: "false",
+                    dateExpire: _datetime,
+                    dateNotification: _datetime,
+                    notification: "true",
                     tag: "0");
                 _todoBloc.addition.add(todo);
                 Navigator.pop(context, true);
