@@ -1,6 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import 'dart:async';
 
 class DemoTheme {
   final String name;
@@ -23,13 +24,4 @@ class ThemeBloc {
 
   const ThemeBloc._(this.themeDataStream, this.selectedTheme);
 
-  DemoTheme initialTheme() {
-    return DemoTheme(
-        'initial',
-        ThemeData(
-          brightness: Brightness.light,
-          accentColor: Colors.brown,
-          primaryColor: Colors.green,
-        ));
-  }
 }

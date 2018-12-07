@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:todo_v2/bloc/themesBloc.dart';
 import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/pages/add_task_page.dart';
 import 'package:todo_v2/pages/settingsPage.dart';
-import 'package:todo_v2/bloc/themes.dart';
 import 'package:todo_v2/widgets/listView.dart';
 
 class MyHomePage extends StatefulWidget {
