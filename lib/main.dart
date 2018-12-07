@@ -1,16 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_v2/bloc/themes.dart';
 import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/bloc/todoProvider.dart';
 import 'package:todo_v2/pages/homePage.dart';
-import 'package:todo_v2/bloc/themes.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_v2/themes/custom_themes.dart';
 
 
 Future main() async {
   DemoTheme theme;
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  theme = (prefs.getString("theme") == "dark")? dark : light;
+  switch (prefs.getString("theme")) {
+    case "dark":
+      {
+        theme = dark;
+        break;
+      }
+    case "light":
+      {
+        theme = light;
+        break;
+      }
+    case "purpledark":
+      {
+        theme = purpledark;
+        break;
+      }
+    case "purplelight":
+      {
+        theme = purplelight;
+        break;
+      }
+    default:
+      {
+        theme = light;
+        break;
+      }
+  }
   runApp(new TodoListApp(theme: theme));
 }
 

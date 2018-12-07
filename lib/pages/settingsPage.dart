@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_v2/bloc/themes.dart';
 import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/database/database.dart';
-import 'package:todo_v2/bloc/themes.dart';
-import 'package:todo_v2/widgets/settingsbutton.dart';
 import 'package:todo_v2/themes/custom_themes.dart';
-import 'dart:async';
+import 'package:todo_v2/widgets/settingsbutton.dart';
 
 class SettingsPage extends StatelessWidget {
   final ThemeBloc themeBloc;
@@ -29,17 +28,35 @@ class SettingsPage extends StatelessWidget {
               SettingsButton(
                 onPressed: () {
                     themeBloc.selectedTheme.add(_buildLightTheme());
-                    _storeThemeData("light");
+                    _storeThemeData("Helles Design");
                     },
                 text: "Light theme",
               ),
+              Divider(),
               SettingsButton(
                 onPressed: (){
                   themeBloc.selectedTheme.add(_buildDarkTheme());
-                  _storeThemeData("dark");
+                  _storeThemeData("Dunkles Design");
                   },
                 text: "Dark theme",
               ),
+              Divider(),
+              SettingsButton(
+                onPressed: () {
+                  themeBloc.selectedTheme.add(_buildPurpleDarkTheme());
+                  _storeThemeData("purpleDark");
+                },
+                text: "Lila Design (dunkel)",
+              ),
+              Divider(),
+              SettingsButton(
+                onPressed: () {
+                  themeBloc.selectedTheme.add(_buildPurpleLightTheme());
+                  _storeThemeData("purplelight");
+                },
+                text: "Lila Design (hell)",
+              ),
+              Divider(),
               SettingsButton(
                   text: "Datenbank löschen",
                   onPressed: () {
@@ -65,5 +82,13 @@ class SettingsPage extends StatelessWidget {
 
   DemoTheme _buildDarkTheme() {
     return dark;
+  }
+
+  DemoTheme _buildPurpleDarkTheme() {
+    return purpledark;
+  }
+
+  DemoTheme _buildPurpleLightTheme() {
+    return purplelight;
   }
 }
