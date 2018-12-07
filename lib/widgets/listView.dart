@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/model/Todo.dart';
 import 'package:todo_v2/widgets/smallWidgets.dart';
@@ -14,6 +15,31 @@ class CustomListView extends StatefulWidget {
 }
 
 class _CustomListViewState extends State<CustomListView> {
+
+
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+
+  @override
+  void initState() {
+    super.initState();
+    // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+    var initializationSettingsAndroid = new AndroidInitializationSettings(
+        'ic_launcher');
+    var initializationSettingsIOS = new IOSInitializationSettings();
+    var initializationSettings = new InitializationSettings(
+        initializationSettingsAndroid, initializationSettingsIOS);
+    flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+    flutterLocalNotificationsPlugin.initialize(
+        initializationSettings, selectNotification: onSelectNotification);
+  }
+
+  Future onSelectNotification(String payload) async {
+    if (payload != null) {
+      debugPrint('notification payload: ' + payload);
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
@@ -52,7 +78,8 @@ class _CustomListViewState extends State<CustomListView> {
                                   widget.items[index].description, context),
                             ],
                           ),
-                          getButtonRow(widget.items[index], widget.todoBloc)
+                          getButtonRow(widget.items[index], widget.todoBloc,
+                              flutterLocalNotificationsPlugin)
                         ],
                       )
                     ],

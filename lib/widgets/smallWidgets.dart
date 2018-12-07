@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/model/Todo.dart';
-import 'package:intl/intl.dart';
 
-Widget getButtonRow(Todo todo, TodoBloc todoBloc) {
+Widget getButtonRow(Todo todo, TodoBloc todoBloc,
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) {
+  Future _cancelNotification() async {
+    flutterLocalNotificationsPlugin.cancel(todo.uuid.hashCode);
+  }
+
   if (todo.tag == "0") {
     return Row(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -11,11 +17,13 @@ Widget getButtonRow(Todo todo, TodoBloc todoBloc) {
         IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
+              _cancelNotification();
               todoBloc.removalPending.add(todo);
             }),
         IconButton(
             icon: Icon(Icons.done),
             onPressed: () {
+              _cancelNotification();
               todoBloc.changePending.add(todo);
             })
       ],
@@ -27,6 +35,7 @@ Widget getButtonRow(Todo todo, TodoBloc todoBloc) {
         IconButton(
             icon: Icon(Icons.delete),
             onPressed: () {
+              _cancelNotification();
               todoBloc.removalDone.add(todo);
             }),
       ],

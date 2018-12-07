@@ -28,6 +28,7 @@ class TodoDatabase {
   }
 
   Future init() async {
+    print("init db");
     return await _init();
   }
 
@@ -70,6 +71,30 @@ class TodoDatabase {
     return todos;
   }
 
+  Future<Todo> getIdOfTodo(Todo todo) async {
+    var db = await _getDb();
+    List<String> args = List<String>();
+    args.add(todo.uuid);
+    var result = await db.rawQuery(
+        'SELECT * FROM $tableName WHERE ${Todo.dbUUID} = ?', args);
+    Todo id;
+    for (Map<String, dynamic> item in result) {
+      todo = Todo.fromMap(item);
+    }
+    return id;
+  }
+
+  Future<Todo> getTodo(String uuid) async {
+    var db = await _getDb();
+    var result = await db.rawQuery(
+        'SELECT * FROM $tableName WHERE ${Todo.dbUUID} = $uuid');
+    Todo todos;
+    for (Map<String, dynamic> item in result) {
+      todos = new Todo.fromMap(item);
+    }
+    return todos;
+  }
+
   Future<int> insertTodo(Todo todo) async {
     var db = await _getDb();
     return await db.insert(tableName, todo.toMap());
@@ -88,6 +113,7 @@ class TodoDatabase {
   Future dropTable() async{
     var db = await _getDb();
     db.delete(tableName);
+    init();
   }
 
   Future close() async {
