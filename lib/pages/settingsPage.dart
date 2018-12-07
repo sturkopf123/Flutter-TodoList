@@ -28,17 +28,17 @@ class SettingsPage extends StatelessWidget {
               SettingsButton(
                 onPressed: () {
                     themeBloc.selectedTheme.add(_buildLightTheme());
-                    _storeThemeData("Helles Design");
+                    _storeThemeData("light");
                     },
-                text: "Light theme",
+                text: "Helles Design",
               ),
               Divider(),
               SettingsButton(
                 onPressed: (){
                   themeBloc.selectedTheme.add(_buildDarkTheme());
-                  _storeThemeData("Dunkles Design");
+                  _storeThemeData("dark");
                   },
-                text: "Dark theme",
+                text: "Dunkles Design",
               ),
               Divider(),
               SettingsButton(
@@ -55,6 +55,25 @@ class SettingsPage extends StatelessWidget {
                   _storeThemeData("purplelight");
                 },
                 text: "Lila Design (hell)",
+              ),
+              Divider(),
+              SettingsButton(
+                  onPressed: () {
+                    showDialog(context: context,
+                        child: AlertDialog(
+                          title: new Text("To-Do List"),
+                          content: new Text("2018 © Andreas Zimmermann"),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text("Verstanden"),
+                              onPressed: () {
+                                Navigator.pop(context, false);
+                              },
+                            )
+                          ],
+                        ));
+                  },
+                  text: "Über"
               ),
               Divider(),
               SettingsButton(
