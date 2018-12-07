@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class _InputDropdown extends StatelessWidget {
-  const _InputDropdown({
-    Key key,
+  const _InputDropdown({Key key,
     this.child,
     this.labelText,
     this.valueText,
     this.valueStyle,
-    this.onPressed }) : super(key: key);
+    this.onPressed})
+      : super(key: key);
 
   final String labelText;
   final String valueText;
@@ -33,8 +33,11 @@ class _InputDropdown extends StatelessWidget {
           children: <Widget>[
             new Text(valueText, style: valueStyle),
             new Icon(Icons.arrow_drop_down,
-                color: Theme.of(context).brightness == Brightness.light ? Colors.grey.shade700 : Colors.white70
-            ),
+                color: Theme
+                    .of(context)
+                    .brightness == Brightness.light
+                    ? Colors.grey.shade700
+                    : Colors.white70),
           ],
         ),
       ),
@@ -63,19 +66,14 @@ class DateTimePicker extends StatelessWidget {
         context: context,
         initialDate: selectedDate,
         firstDate: new DateTime(2015, 8),
-        lastDate: new DateTime(2101)
-    );
-    if (picked != null && picked != selectedDate)
-      selectDateChanged(picked);
+        lastDate: new DateTime(2101));
+    if (picked != null && picked != selectedDate) selectDateChanged(picked);
   }
 
   Future<Null> selectTime(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
-        context: context,
-        initialTime: selectedTime
-    );
-    if (picked != null && picked != selectedTime)
-      selectTimeChanged(picked);
+    final TimeOfDay picked =
+    await showTimePicker(context: context, initialTime: selectedTime);
+    if (picked != null && picked != selectedTime) selectTimeChanged(picked);
   }
 
   @override
@@ -90,16 +88,22 @@ class DateTimePicker extends StatelessWidget {
             labelText: labelText,
             valueText: new DateFormat.yMMMd().format(selectedDate),
             valueStyle: valueStyle,
-            onPressed: () { selectDate(context); },
+            onPressed: () {
+              selectDate(context);
+            },
           ),
         ),
-        const SizedBox(width: 12.0,),
+        const SizedBox(
+          width: 12.0,
+        ),
         new Expanded(
           flex: 3,
           child: new _InputDropdown(
             valueText: selectedTime.format(context),
             valueStyle: valueStyle,
-            onPressed: (){selectTime(context);},
+            onPressed: () {
+              selectTime(context);
+            },
           ),
         )
       ],

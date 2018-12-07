@@ -27,17 +27,17 @@ class SettingsPage extends StatelessWidget {
             children: <Widget>[
               SettingsButton(
                 onPressed: () {
-                    themeBloc.selectedTheme.add(_buildLightTheme());
-                    _storeThemeData("light");
-                    },
+                  themeBloc.selectedTheme.add(_buildLightTheme());
+                  _storeThemeData("light");
+                },
                 text: "Helles Design",
               ),
               Divider(),
               SettingsButton(
-                onPressed: (){
+                onPressed: () {
                   themeBloc.selectedTheme.add(_buildDarkTheme());
                   _storeThemeData("dark");
-                  },
+                },
                 text: "Dunkles Design",
               ),
               Divider(),
@@ -59,7 +59,8 @@ class SettingsPage extends StatelessWidget {
               Divider(),
               SettingsButton(
                   onPressed: () {
-                    showDialog(context: context,
+                    showDialog(
+                        context: context,
                         child: AlertDialog(
                           title: new Text("To-Do List"),
                           content: new Text("2018 © Andreas Zimmermann"),
@@ -73,8 +74,7 @@ class SettingsPage extends StatelessWidget {
                           ],
                         ));
                   },
-                  text: "Über"
-              ),
+                  text: "Über"),
               Divider(),
               SettingsButton(
                   text: "Datenbank löschen",

@@ -9,36 +9,32 @@ import 'package:todo_v2/widgets/datetimepicker.dart';
 import 'package:uuid/uuid.dart';
 
 class NewTodoPage extends StatefulWidget {
-
   final TodoBloc todoBloc;
 
   @override
   _NewTodoPageState createState() => _NewTodoPageState();
 
-  NewTodoPage({Key key, this.todoBloc}):super(key: key);
+  NewTodoPage({Key key, this.todoBloc}) : super(key: key);
 }
 
 class _NewTodoPageState extends State<NewTodoPage> {
-
-
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
   @override
   initState() {
     super.initState();
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
-    var initializationSettingsAndroid = new AndroidInitializationSettings(
-        'ic_launcher');
+    var initializationSettingsAndroid =
+    new AndroidInitializationSettings('ic_launcher');
     var initializationSettingsIOS = new IOSInitializationSettings();
     var initializationSettings = new InitializationSettings(
         initializationSettingsAndroid, initializationSettingsIOS);
     flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-    flutterLocalNotificationsPlugin.initialize(
-        initializationSettings, selectNotification: onSelectNotification);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings,
+        selectNotification: onSelectNotification);
   }
 
   TodoDatabase db = TodoDatabase.get();
-
 
   Future onSelectNotification(String payload) async {
     if (payload != null) {
@@ -56,7 +52,6 @@ class _NewTodoPageState extends State<NewTodoPage> {
     vibrationPattern[2] = 5000;
     vibrationPattern[3] = 2000;
 
-
     var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
         'to_do_list_flutter',
         'ToDo List Channel',
@@ -67,8 +62,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
         style: AndroidNotificationStyle.BigText,
         largeIconBitmapSource: BitmapSource.Drawable,
         vibrationPattern: vibrationPattern);
-    var iOSPlatformChannelSpecifics =
-    new IOSNotificationDetails(sound: "");
+    var iOSPlatformChannelSpecifics = new IOSNotificationDetails(sound: "");
     var platformChannelSpecifics = new NotificationDetails(
         androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.schedule(
@@ -80,32 +74,41 @@ class _NewTodoPageState extends State<NewTodoPage> {
         payload: task.uuid);
   }
 
-
   //TODO check if min+15 which would end in new day actually changed the da to the following
   DateTime _toDate = new DateTime.now();
   TimeOfDay _toTime = new TimeOfDay.now();
   DateTime _toDateNotifcation = new DateTime.now();
-  TimeOfDay _toTimeNotifcation = new TimeOfDay(hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute + 15);
+  TimeOfDay _toTimeNotifcation = new TimeOfDay(
+      hour: TimeOfDay
+          .now()
+          .hour, minute: TimeOfDay
+      .now()
+      .minute + 15);
   bool checkboxnotification = false;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   bool _notify = false;
 
-  void _updateTime(){
+  void _updateTime() {
     _toDate = new DateTime.now();
     _toTime = new TimeOfDay.now();
     _toDateNotifcation = new DateTime.now();
-    _toTimeNotifcation = new TimeOfDay(hour: TimeOfDay.now().hour, minute: TimeOfDay.now().minute + 15);
+    _toTimeNotifcation = new TimeOfDay(
+        hour: TimeOfDay
+            .now()
+            .hour, minute: TimeOfDay
+        .now()
+        .minute + 15);
   }
 
-  Widget _showNotification(bool notify){
-    if(notify){
+  Widget _showNotification(bool notify) {
+    if (notify) {
       return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-              child:  new DateTimePicker(
+              child: new DateTimePicker(
                   labelText: 'Wann',
                   selectedDate: _toDateNotifcation,
                   selectedTime: _toTimeNotifcation,
@@ -118,10 +121,10 @@ class _NewTodoPageState extends State<NewTodoPage> {
                     setState(() {
                       _toTimeNotifcation = time;
                     });
-                  }
-              ),
-            )]);
-    }else{
+                  }),
+            )
+          ]);
+    } else {
       return Container();
     }
   }
@@ -147,18 +150,18 @@ class _NewTodoPageState extends State<NewTodoPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Container(
-                          child: Text("Titel",
+                          child: Text(
+                            "Titel",
                             style: new TextStyle(
                               fontSize: 20.0,
-                            ),)
-                      ),
+                            ),
+                          )),
                       Container(
                         child: TextField(
                           controller: titleController,
                           maxLength: 20,
-                          decoration: InputDecoration(
-                              hintText: 'Titel eingeben...'
-                          ),
+                          decoration:
+                          InputDecoration(hintText: 'Titel eingeben...'),
                         ),
                       ),
                     ],
@@ -171,11 +174,12 @@ class _NewTodoPageState extends State<NewTodoPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Container(
-                          child: Text("Beschreibung",
+                          child: Text(
+                            "Beschreibung",
                             style: new TextStyle(
                               fontSize: 20.0,
-                            ),)
-                      ),
+                            ),
+                          )),
                       Container(
                         child: TextField(
                           controller: descriptionController,
@@ -183,8 +187,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
                           maxLines: 4,
                           maxLength: 150,
                           decoration: InputDecoration(
-                              hintText: 'Beschreibung eingeben...'
-                          ),
+                              hintText: 'Beschreibung eingeben...'),
                         ),
                       ),
                     ],
@@ -197,7 +200,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Container(
-                        child:  new DateTimePicker(
+                        child: new DateTimePicker(
                             labelText: 'Wann',
                             selectedDate: _toDate,
                             selectedTime: _toTime,
@@ -210,15 +213,15 @@ class _NewTodoPageState extends State<NewTodoPage> {
                               setState(() {
                                 _toTime = time;
                               });
-                            }
-                        ),
+                            }),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 16.0, bottom: 8.0),
                         child: Row(
                           children: <Widget>[
                             Expanded(
-                              child: Text("Benachrichtigung",
+                              child: Text(
+                                "Benachrichtigung",
                                 style: TextStyle(
                                   fontSize: 20.0,
                                 ),
@@ -227,7 +230,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
                             Checkbox(
                                 value: checkboxnotification,
                                 tristate: false,
-                                onChanged: (bool value){
+                                onChanged: (bool value) {
                                   setState(() {
                                     _updateTime();
                                     checkboxnotification = value;
@@ -253,10 +256,18 @@ class _NewTodoPageState extends State<NewTodoPage> {
             child: Text("Abbrechen"),
           ),
           FlatButton(
-            onPressed: (){
-              String _datetime = new DateTime(_toDate.year, _toDate.month, _toDate.day, _toTime.hour, _toTime.minute).toString();
-              String _datetimeNotification = new DateTime(_toDateNotifcation.year, _toDateNotifcation.month, _toDateNotifcation.day, _toTimeNotifcation.hour, _toTimeNotifcation.minute).toString();
-              if(titleController.text != ""){
+            onPressed: () {
+              String _datetime = new DateTime(_toDate.year, _toDate.month,
+                  _toDate.day, _toTime.hour, _toTime.minute)
+                  .toString();
+              String _datetimeNotification = new DateTime(
+                  _toDateNotifcation.year,
+                  _toDateNotifcation.month,
+                  _toDateNotifcation.day,
+                  _toTimeNotifcation.hour,
+                  _toTimeNotifcation.minute)
+                  .toString();
+              if (titleController.text != "") {
                 Todo todo = Todo(
                     uuid: Uuid().v1(),
                     title: titleController.text,
@@ -272,7 +283,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
                   _scheduleNotification(todo);
                 }
                 Navigator.pop(context, true);
-              }else{
+              } else {
                 _showDialog(context);
               }
             },
@@ -305,6 +316,4 @@ class _NewTodoPageState extends State<NewTodoPage> {
       },
     );
   }
-
 }
-

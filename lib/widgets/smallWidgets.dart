@@ -44,16 +44,19 @@ Widget getButtonRow(Todo todo, TodoBloc todoBloc,
 }
 
 Widget getDescription(String description, BuildContext context) {
-  double _width = MediaQuery.of(context).size.width*0.8;
+  double _width = MediaQuery
+      .of(context)
+      .size
+      .width * 0.8;
   if (description != "") {
     return Padding(
         padding: const EdgeInsets.only(left: 16.0, top: 8.0),
         child: Container(
             width: _width,
             child: Text(
-          description,
-          softWrap: true,
-        )));
+              description,
+              softWrap: true,
+            )));
   } else {
     return Container();
   }

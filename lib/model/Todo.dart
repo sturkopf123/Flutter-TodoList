@@ -28,7 +28,7 @@ class Todo {
 
   Todo.fromMap(Map<String, dynamic> map)
       : this(
-            uuid : map[dbUUID],
+      uuid: map[dbUUID],
             title: map[dbTitle],
             description: map[dbDescription],
             dateExpire: map[dbDateExpire],
@@ -49,7 +49,7 @@ class Todo {
     };
   }
 
-  String toString(){
+  String toString() {
     return "title: $title, dateExpire: $dateExpire, dateNotification: $dateNotification";
   }
 }

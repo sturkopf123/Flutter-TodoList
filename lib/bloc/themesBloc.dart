@@ -16,12 +16,9 @@ class ThemeBloc {
 
   factory ThemeBloc() {
     final selectedTheme = PublishSubject<DemoTheme>();
-    final themeDataStream = selectedTheme
-        .distinct()
-        .map((theme) => theme.data);
+    final themeDataStream = selectedTheme.distinct().map((theme) => theme.data);
     return ThemeBloc._(themeDataStream, selectedTheme);
   }
 
   const ThemeBloc._(this.themeDataStream, this.selectedTheme);
-
 }

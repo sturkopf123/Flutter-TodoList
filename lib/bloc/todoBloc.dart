@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
+import 'package:todo_v2/algorithms/quicksort.dart';
 import 'package:todo_v2/database/database.dart';
 import 'package:todo_v2/model/Todo.dart';
-import 'package:todo_v2/algorithms/quicksort.dart';
 
 class TodoBloc {
   TodoBloc() {

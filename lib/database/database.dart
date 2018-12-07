@@ -9,7 +9,6 @@ import 'package:todo_v2/model/Todo.dart';
 class TodoDatabase {
   static final TodoDatabase _todoDatabase = new TodoDatabase._internal();
 
-
   final String tableName = "Todos";
 
   Database db;
@@ -22,8 +21,8 @@ class TodoDatabase {
 
   TodoDatabase._internal();
 
-  Future<Database> _getDb() async{
-    if(!didInit) await _init();
+  Future<Database> _getDb() async {
+    if (!didInit) await _init();
     return db;
   }
 
@@ -37,35 +36,36 @@ class TodoDatabase {
     String path = join(documentsDirectory.path, "todos.db");
     db = await openDatabase(path, version: 1,
         onCreate: (Database db, int version) async {
-          await db.execute(
-              "CREATE TABLE $tableName ("
-                  "${Todo.dbUUID} STRING PRIMARY KEY,"
-                  "${Todo.dbTitle} TEXT,"
-                  "${Todo.dbDescription} TEXT,"
-                  "${Todo.dbDateExpire} TEXT,"
-                  "${Todo.dbDateNotification} TEXT,"
-                  "${Todo.dbNotification} TEXT,"
-                  "${Todo.dbTag} TEXT"
-                  ")");
+          await db.execute("CREATE TABLE $tableName ("
+              "${Todo.dbUUID} STRING PRIMARY KEY,"
+              "${Todo.dbTitle} TEXT,"
+              "${Todo.dbDescription} TEXT,"
+              "${Todo.dbDateExpire} TEXT,"
+              "${Todo.dbDateNotification} TEXT,"
+              "${Todo.dbNotification} TEXT,"
+              "${Todo.dbTag} TEXT"
+              ")");
         });
     didInit = true;
   }
 
-  Future<List<Todo>> getDoneTodos() async{
+  Future<List<Todo>> getDoneTodos() async {
     var db = await _getDb();
-    var result = await db.rawQuery('SELECT * FROM $tableName WHERE ${Todo.dbTag} = 1');
+    var result =
+    await db.rawQuery('SELECT * FROM $tableName WHERE ${Todo.dbTag} = 1');
     List<Todo> todos = [];
-    for(Map<String, dynamic> item in result){
+    for (Map<String, dynamic> item in result) {
       todos.add(new Todo.fromMap(item));
     }
     return todos;
   }
 
-  Future<List<Todo>> getPendingTodos() async{
+  Future<List<Todo>> getPendingTodos() async {
     var db = await _getDb();
-    var result = await db.rawQuery('SELECT * FROM $tableName WHERE ${Todo.dbTag} = 0');
+    var result =
+    await db.rawQuery('SELECT * FROM $tableName WHERE ${Todo.dbTag} = 0');
     List<Todo> todos = [];
-    for(Map<String, dynamic> item in result){
+    for (Map<String, dynamic> item in result) {
       todos.add(new Todo.fromMap(item));
     }
     return todos;
@@ -86,8 +86,8 @@ class TodoDatabase {
 
   Future<Todo> getTodo(String uuid) async {
     var db = await _getDb();
-    var result = await db.rawQuery(
-        'SELECT * FROM $tableName WHERE ${Todo.dbUUID} = $uuid');
+    var result = await db
+        .rawQuery('SELECT * FROM $tableName WHERE ${Todo.dbUUID} = $uuid');
     Todo todos;
     for (Map<String, dynamic> item in result) {
       todos = new Todo.fromMap(item);
@@ -100,17 +100,19 @@ class TodoDatabase {
     return await db.insert(tableName, todo.toMap());
   }
 
-  Future updatetodo(Todo todo) async{
+  Future updatetodo(Todo todo) async {
     var db = await _getDb();
-    return await db.update(tableName, todo.toMap(), where: "${Todo.dbUUID} = ?", whereArgs: [todo.uuid]);
+    return await db.update(tableName, todo.toMap(),
+        where: "${Todo.dbUUID} = ?", whereArgs: [todo.uuid]);
   }
 
-  Future deleteTodo(Todo todo) async{
+  Future deleteTodo(Todo todo) async {
     var db = await _getDb();
-    return await db.delete(tableName, where: "${Todo.dbUUID} = ?", whereArgs: [todo.uuid]);
+    return await db
+        .delete(tableName, where: "${Todo.dbUUID} = ?", whereArgs: [todo.uuid]);
   }
 
-  Future dropTable() async{
+  Future dropTable() async {
     var db = await _getDb();
     db.delete(tableName);
     init();
@@ -120,5 +122,4 @@ class TodoDatabase {
     var db = await _getDb();
     return db.close();
   }
-
 }
