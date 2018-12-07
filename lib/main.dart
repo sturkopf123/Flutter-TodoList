@@ -1,119 +1,54 @@
 import 'package:flutter/material.dart';
 import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/bloc/todoProvider.dart';
-import 'package:todo_v2/database/database.dart';
-import 'package:todo_v2/pages/add_task_page.dart';
-import 'package:todo_v2/widgets/listView.dart';
+import 'package:todo_v2/pages/homePage.dart';
+import 'package:todo_v2/bloc/themes.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:todo_v2/themes/custom_themes.dart';
 
-void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+Future main() async {
+  DemoTheme theme;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  theme = (prefs.getString("theme") == "dark")? dark : light;
+  runApp(new TodoListApp(theme: theme));
+}
+
+class TodoListApp extends StatefulWidget {
+
+  TodoListApp({Key key, this.theme}): super(key: key);
+
+  final DemoTheme theme;
+
   @override
-  Widget build(BuildContext context) {
-    return TodoProvider(
-      todoBloc: TodoBloc(),
-      child: MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData.dark(),
-        home: MyHomePage(title: 'Flutter Demo Home Page'),
-      ),
-    );
+  _TodoListAppState createState() => _TodoListAppState();
+
+}
+
+class _TodoListAppState extends State<TodoListApp> {
+  ThemeBloc _themeBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    _themeBloc = ThemeBloc();
   }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  TodoBloc todoBloc = TodoBloc();
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        backgroundColor: Colors.white30,
-        appBar: AppBar(
-          actions: <Widget>[
-            IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  TodoDatabase db = TodoDatabase.get();
-                  db.dropTable();
-                  todoBloc.dropTable();
-                })
-          ],
-          bottom: TabBar(tabs: [
-            Tab(
-              icon: Icon(Icons.date_range),
-            ),
-            Tab(icon: Icon(Icons.event_available))
-          ]),
-          title: Text(widget.title),
+    return StreamBuilder(
+      initialData: widget.theme.data,
+      stream: _themeBloc.themeDataStream,
+      builder: (BuildContext context, AsyncSnapshot<ThemeData> snapshot) => TodoProvider(
+        todoBloc: TodoBloc(),
+        child: MaterialApp(
+          title: 'To-Do List',
+          theme: snapshot.data,
+          home: MyHomePage(title: 'To-Do List', themeBloc: _themeBloc,),
         ),
-        body: TabBarView(children: [
-          StreamBuilder(
-              stream: todoBloc.itemsPending,
-              builder: (BuildContext context, snapData) {
-                if (snapData.hasData && snapData.data.length != 0) {
-                  return CustomListView(
-                    items: snapData.data,
-                    todoBloc: todoBloc,
-                  );
-                } else {
-                  return Center(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.done_all,
-                        size: 100.0,
-                      ),
-                    ],
-                  ));
-                }
-              }),
-          StreamBuilder(
-              stream: todoBloc.itemsDone,
-              builder: (BuildContext context, snapData) {
-                if (snapData.hasData && snapData.data.length != 0) {
-                  return CustomListView(
-                    items: snapData.data,
-                    todoBloc: todoBloc,
-                  );
-                } else {
-                  return Center(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Icon(
-                        Icons.done_all,
-                        size: 100.0,
-                      ),
-                    ],
-                  ));
-                }
-              })
-        ]),
-        floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => NewTodoPage(
-                            todoBloc: todoBloc,
-                          )));
-            }),
       ),
     );
   }
 }
+
+
