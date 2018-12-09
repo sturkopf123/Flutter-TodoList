@@ -36,7 +36,7 @@ class SettingsPage extends StatelessWidget {
                           title: const Text('Design auswählen'),
                           children: <Widget>[
                             Padding(
-                              padding: const EdgeInsets.only(top: 16.0),
+                              padding: const EdgeInsets.only(top: 12.0),
                               child: DialogDemoItem(
                                   color: theme.primaryColor,
                                   text: 'Helles Design',

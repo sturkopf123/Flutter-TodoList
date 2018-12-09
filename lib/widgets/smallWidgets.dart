@@ -20,12 +20,15 @@ Widget getButtonRow(Todo todo, TodoBloc todoBloc,
               _cancelNotification();
               todoBloc.removalPending.add(todo);
             }),
-        IconButton(
-            icon: Icon(Icons.done),
-            onPressed: () {
-              _cancelNotification();
-              todoBloc.changePending.add(todo);
-            })
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: IconButton(
+              icon: Icon(Icons.done),
+              onPressed: () {
+                _cancelNotification();
+                todoBloc.changePending.add(todo);
+              }),
+        )
       ],
     );
   } else {
@@ -38,6 +41,14 @@ Widget getButtonRow(Todo todo, TodoBloc todoBloc,
               _cancelNotification();
               todoBloc.removalDone.add(todo);
             }),
+        Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: IconButton(
+              icon: Icon(Icons.undo),
+              onPressed: () {
+                todoBloc.changeDone.add(todo);
+              }),
+        )
       ],
     );
   }

@@ -6,6 +6,12 @@ import 'package:todo_v2/bloc/todoProvider.dart';
 import 'package:todo_v2/pages/homePage.dart';
 import 'package:todo_v2/themes/custom_themes.dart';
 
+
+/// TODO reschedule notification on undo
+/// TODO check the +15 min on new hour/day
+/// TODO localization
+
+
 Future main() async {
   Design theme;
   SharedPreferences prefs = await SharedPreferences.getInstance();

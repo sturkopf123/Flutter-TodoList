@@ -13,7 +13,7 @@ class TodoBloc {
 
     _additionDoneStreamController.stream.listen(_handleAdditionDone);
     _removalDoneStreamController.stream.listen(_handleRemovalDone);
-
+    _changeDoneStreamController.stream.listen(_handleChangeDone);
     initialize();
   }
 
@@ -21,6 +21,14 @@ class TodoBloc {
     TodoDatabase db = TodoDatabase.get();
     Todo _temp = todo;
     _temp.tag = "1";
+    await db.updatetodo(todo);
+    initialize();
+  }
+
+  _handleChangeDone(Todo todo) async {
+    TodoDatabase db = TodoDatabase.get();
+    Todo _temp = todo;
+    _temp.tag = "0";
     await db.updatetodo(todo);
     initialize();
   }
@@ -71,6 +79,7 @@ class TodoBloc {
     _additionPendingStreamController.close();
     _removalPendingStreamController.close();
     _changePendingStreamController.close();
+    _changeDoneStreamController.close();
   }
 
   //Bloc things for done todos
@@ -82,6 +91,9 @@ class TodoBloc {
 
   Sink<Todo> get removalDone => _removalDoneStreamController.sink;
   final _removalDoneStreamController = StreamController<Todo>();
+
+  Sink<Todo> get changeDone => _changeDoneStreamController.sink;
+  final _changeDoneStreamController = StreamController<Todo>();
 
   //Bloc things for pending todos
   Stream<List<Todo>> get itemsPending => _itemsPendingSubject.stream;

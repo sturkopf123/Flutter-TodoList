@@ -73,7 +73,6 @@ class _NewTodoPageState extends State<NewTodoPage> {
         payload: task.uuid);
   }
 
-  //TODO check if min+15 which would end in new day actually changed the da to the following
   DateTime _toDate = new DateTime.now();
   TimeOfDay _toTime = new TimeOfDay.now();
   DateTime _toDateNotifcation = new DateTime.now();
