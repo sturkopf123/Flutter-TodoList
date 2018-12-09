@@ -14,6 +14,7 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -26,63 +27,105 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               SettingsButton(
+                icon: Icons.color_lens,
+                text: "Design",
                 onPressed: () {
-                  themeBloc.selectedTheme.add(_buildLightTheme());
-                  _storeThemeData("light");
+                  showDemoDialog<String>(
+                      context: context,
+                      child: SimpleDialog(
+                          title: const Text('Design auswählen'),
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(top: 16.0),
+                              child: DialogDemoItem(
+                                  color: theme.primaryColor,
+                                  text: 'Helles Design',
+                                  onPressed: () {
+                                    themeBloc.selectedTheme.add(
+                                        _buildLightTheme());
+                                    _storeThemeData("light");
+                                    Navigator.pop(context, "light");
+                                  }
+                              ),
+                            ),
+                            Divider(),
+                            DialogDemoItem(
+                                color: theme.primaryColor,
+                                text: 'Dunkles Design',
+                                onPressed: () {
+                                  themeBloc.selectedTheme.add(
+                                      _buildDarkTheme());
+                                  _storeThemeData("dark");
+                                  Navigator.pop(context, "dark");
+                                }
+                            ),
+                            Divider(),
+                            DialogDemoItem(
+                                color: theme.primaryColor,
+                                text: 'Lila (hell)',
+                                onPressed: () {
+                                  themeBloc.selectedTheme.add(
+                                      _buildPurpleLightTheme());
+                                  _storeThemeData("purplelight");
+                                  Navigator.pop(context, "purplelight");
+                                }
+                            ),
+                            Divider(),
+                            DialogDemoItem(
+                                color: theme.primaryColor,
+                                text: 'Lila (dunkel)',
+                                onPressed: () {
+                                  themeBloc.selectedTheme.add(
+                                      _buildPurpleDarkTheme());
+                                  _storeThemeData("purpledark");
+                                  Navigator.pop(context, "purpledark");
+                                }
+                            ),
+                          ]
+                      )
+                  );
                 },
-                text: "Helles Design",
               ),
               Divider(),
               SettingsButton(
-                onPressed: () {
-                  themeBloc.selectedTheme.add(_buildDarkTheme());
-                  _storeThemeData("dark");
-                },
-                text: "Dunkles Design",
-              ),
+                  icon: Icons.delete,
+                  text: "Datenbank löschen",
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        child: AlertDialog(
+                          title: new Text("Achtung"),
+                          content: new Text(
+                              "Wollen Sie wirklich alle Daten löschen?"),
+                          actions: <Widget>[
+                            FlatButton(
+                                onPressed: () {
+                                  Navigator.pop(context, "flase");
+                                },
+                                child: Text("Abbrechen")),
+                            FlatButton(
+                                onPressed: () {
+                                  TodoDatabase db = TodoDatabase.get();
+                                  db.dropTable();
+                                  todoBloc.dropTable();
+                                  Navigator.pop(context, "flase");
+                                },
+                                child: Text("Löschen")),
+                          ],
+                        ));
+                  }),
               Divider(),
               SettingsButton(
-                onPressed: () {
-                  themeBloc.selectedTheme.add(_buildPurpleDarkTheme());
-                  _storeThemeData("purpleDark");
-                },
-                text: "Lila Design (dunkel)",
-              ),
-              Divider(),
-              SettingsButton(
-                onPressed: () {
-                  themeBloc.selectedTheme.add(_buildPurpleLightTheme());
-                  _storeThemeData("purplelight");
-                },
-                text: "Lila Design (hell)",
-              ),
-              Divider(),
-              SettingsButton(
+                  icon: Icons.info,
                   onPressed: () {
                     showDialog(
                         context: context,
                         child: AlertDialog(
                           title: new Text("To-Do List"),
                           content: new Text("2018 © Andreas Zimmermann"),
-                          actions: <Widget>[
-                            FlatButton(
-                              child: Text("Verstanden"),
-                              onPressed: () {
-                                Navigator.pop(context, false);
-                              },
-                            )
-                          ],
                         ));
                   },
                   text: "Über"),
-              Divider(),
-              SettingsButton(
-                  text: "Datenbank löschen",
-                  onPressed: () {
-                    TodoDatabase db = TodoDatabase.get();
-                    db.dropTable();
-                    todoBloc.dropTable();
-                  }),
             ],
           ),
         ),
@@ -90,24 +133,58 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
+  void showDemoDialog<T>({ BuildContext context, Widget child }) {
+    showDialog<T>(
+      context: context,
+      builder: (BuildContext context) => child,
+    );
+  }
+
+
   _storeThemeData(String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("theme", name);
   }
 
-  DemoTheme _buildLightTheme() {
+  Design _buildLightTheme() {
     return light;
   }
 
-  DemoTheme _buildDarkTheme() {
+  Design _buildDarkTheme() {
     return dark;
   }
 
-  DemoTheme _buildPurpleDarkTheme() {
-    return purpledark;
+  Design _buildPurpleDarkTheme() {
+    return purpleDark;
   }
 
-  DemoTheme _buildPurpleLightTheme() {
-    return purplelight;
+  Design _buildPurpleLightTheme() {
+    return purpleLight;
+  }
+}
+
+class DialogDemoItem extends StatelessWidget {
+  const DialogDemoItem({ Key key, this.color, this.text, this.onPressed })
+      : super(key: key);
+
+  final Color color;
+  final String text;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialogOption(
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(text, style: TextStyle(fontSize: 16.0),),
+          ),
+        ],
+      ),
+    );
   }
 }

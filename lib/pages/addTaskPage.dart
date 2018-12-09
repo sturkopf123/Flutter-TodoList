@@ -23,7 +23,6 @@ class _NewTodoPageState extends State<NewTodoPage> {
   @override
   initState() {
     super.initState();
-    // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     var initializationSettingsAndroid =
     new AndroidInitializationSettings('ic_launcher');
     var initializationSettingsIOS = new IOSInitializationSettings();
@@ -84,7 +83,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
           .hour, minute: TimeOfDay
       .now()
       .minute + 15);
-  bool checkboxnotification = false;
+  bool _notification = false;
   final titleController = TextEditingController();
   final descriptionController = TextEditingController();
   bool _notify = false;
@@ -228,12 +227,12 @@ class _NewTodoPageState extends State<NewTodoPage> {
                               ),
                             ),
                             Checkbox(
-                                value: checkboxnotification,
+                                value: _notification,
                                 tristate: false,
                                 onChanged: (bool value) {
                                   setState(() {
                                     _updateTime();
-                                    checkboxnotification = value;
+                                    _notification = value;
                                     _notify = value;
                                   });
                                 }),

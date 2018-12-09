@@ -7,7 +7,7 @@ import 'package:todo_v2/pages/homePage.dart';
 import 'package:todo_v2/themes/custom_themes.dart';
 
 Future main() async {
-  DemoTheme theme;
+  Design theme;
   SharedPreferences prefs = await SharedPreferences.getInstance();
   switch (prefs.getString("theme")) {
     case "dark":
@@ -22,12 +22,12 @@ Future main() async {
       }
     case "purpledark":
       {
-        theme = purpledark;
+        theme = purpleDark;
         break;
       }
     case "purplelight":
       {
-        theme = purplelight;
+        theme = purpleLight;
         break;
       }
     default:
@@ -42,7 +42,7 @@ Future main() async {
 class TodoListApp extends StatefulWidget {
   TodoListApp({Key key, this.theme}) : super(key: key);
 
-  final DemoTheme theme;
+  final Design theme;
 
   @override
   _TodoListAppState createState() => _TodoListAppState();

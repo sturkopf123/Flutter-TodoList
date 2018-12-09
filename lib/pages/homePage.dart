@@ -58,9 +58,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(
-                            Icons.done_all,
-                            size: 100.0,
+                          Opacity(
+                            opacity: 0.25,
+                            child: Icon(
+                              Icons.done_all,
+                              size: 100.0,
+                            ),
                           ),
                         ],
                       ));
@@ -80,9 +83,12 @@ class _MyHomePageState extends State<MyHomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          Icon(
-                            Icons.done_all,
-                            size: 100.0,
+                          Opacity(
+                            opacity: 0.25,
+                            child: Icon(
+                              Icons.done_all,
+                              size: 100.0,
+                            ),
                           ),
                         ],
                       ));
