@@ -48,7 +48,7 @@ class _CustomListViewState extends State<CustomListView> {
               child: Card(
                   elevation: 6.0,
                   child: ExpansionTile(
-                    initiallyExpanded: (index == 0) ? true : false,
+                    initiallyExpanded: true,
                     title: Text(widget.items[index].title),
                     children: <Widget>[
                       Column(

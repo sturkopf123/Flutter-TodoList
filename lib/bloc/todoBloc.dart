@@ -21,6 +21,7 @@ class TodoBloc {
     TodoDatabase db = TodoDatabase.get();
     Todo _temp = todo;
     _temp.tag = "1";
+    _temp.notification = "false";
     await db.updatetodo(todo);
     initialize();
   }
@@ -28,6 +29,7 @@ class TodoBloc {
   _handleChangeDone(Todo todo) async {
     TodoDatabase db = TodoDatabase.get();
     Todo _temp = todo;
+    _temp.notification = "false";
     _temp.tag = "0";
     await db.updatetodo(todo);
     initialize();
