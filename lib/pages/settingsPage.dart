@@ -122,10 +122,11 @@ class SettingsPage extends StatelessWidget {
                         context: context,
                         child: AlertDialog(
                           title: new Text("To-Do List"),
-                          content: new Text("2018 © Andreas Zimmermann"),
+                          content: Text(
+                              "Andreas Zimmermann, 2018\nGitHub: sturkopf123"),
                         ));
                   },
-                  text: "Über"),
+                  text: "Informationen"),
             ],
           ),
         ),

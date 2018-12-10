@@ -90,13 +90,9 @@ class _NewTodoPageState extends State<NewTodoPage> {
   void _updateTime() {
     _toDate = new DateTime.now();
     _toTime = new TimeOfDay.now();
-    _toDateNotifcation = new DateTime.now();
-    _toTimeNotifcation = new TimeOfDay(
-        hour: TimeOfDay
-            .now()
-            .hour, minute: TimeOfDay
-        .now()
-        .minute + 15);
+    DateTime _temp = DateTime.now().add(new Duration(minutes: 15));
+    _toDateNotifcation = _temp;
+    _toTimeNotifcation = new TimeOfDay(hour: _temp.hour, minute: _temp.minute);
   }
 
   Widget _showNotification(bool notify) {
@@ -159,7 +155,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
                           controller: titleController,
                           maxLength: 20,
                           decoration:
-                          InputDecoration(hintText: 'Titel eingeben...'),
+                          InputDecoration(hintText: 'Titel eingeben.'),
                         ),
                       ),
                     ],
@@ -185,7 +181,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
                           maxLines: 4,
                           maxLength: 150,
                           decoration: InputDecoration(
-                              hintText: 'Beschreibung eingeben...'),
+                              hintText: 'Beschreibung eingeben.'),
                         ),
                       ),
                     ],
