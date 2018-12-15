@@ -48,7 +48,9 @@ class SettingsPage extends StatelessWidget {
                                   }
                               ),
                             ),
-                            Divider(),
+                            Divider(
+                              height: 10.0,
+                            ),
                             DialogDemoItem(
                                 color: theme.primaryColor,
                                 text: 'Dunkles Design',
@@ -59,7 +61,9 @@ class SettingsPage extends StatelessWidget {
                                   Navigator.pop(context, "dark");
                                 }
                             ),
-                            Divider(),
+                            Divider(
+                              height: 10.0,
+                            ),
                             DialogDemoItem(
                                 color: theme.primaryColor,
                                 text: 'Lila (hell)',
@@ -70,7 +74,9 @@ class SettingsPage extends StatelessWidget {
                                   Navigator.pop(context, "purplelight");
                                 }
                             ),
-                            Divider(),
+                            Divider(
+                              height: 10.0,
+                            ),
                             DialogDemoItem(
                                 color: theme.primaryColor,
                                 text: 'Lila (dunkel)',

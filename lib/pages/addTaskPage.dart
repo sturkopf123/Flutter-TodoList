@@ -129,7 +129,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Neue Aufgabe"),
+          title: Text("Neues Todo"),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -144,18 +144,18 @@ class _NewTodoPageState extends State<NewTodoPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Container(
-                          child: Text(
-                            "Titel",
-                            style: new TextStyle(
-                              fontSize: 20.0,
-                            ),
-                          )),
-                      Container(
                         child: TextField(
                           controller: titleController,
                           maxLength: 20,
                           decoration:
-                          InputDecoration(hintText: 'Titel eingeben.'),
+                          InputDecoration(
+                              labelText: "Titel",
+                              prefixIcon: Icon(Icons.title),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(15.0))
+                              ),
+                              hintText: 'Titel eingeben.')
                         ),
                       ),
                     ],
@@ -168,19 +168,18 @@ class _NewTodoPageState extends State<NewTodoPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: <Widget>[
                       Container(
-                          child: Text(
-                            "Beschreibung",
-                            style: new TextStyle(
-                              fontSize: 20.0,
-                            ),
-                          )),
-                      Container(
                         child: TextField(
                           controller: descriptionController,
                           keyboardType: TextInputType.multiline,
                           maxLines: 4,
                           maxLength: 150,
                           decoration: InputDecoration(
+                              labelText: "Beschreibung",
+                              prefixIcon: Icon(Icons.description),
+                              border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.all(
+                                      Radius.circular(15.0))
+                              ),
                               hintText: 'Beschreibung eingeben.'),
                         ),
                       ),
