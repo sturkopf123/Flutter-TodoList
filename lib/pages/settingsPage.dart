@@ -60,28 +60,6 @@ class SettingsPage extends StatelessWidget {
                                       .add(_buildDarkTheme());
                                   _storeThemeData("dark");
                                 }),
-                            Divider(
-                              height: 10.0,
-                            ),
-                            DialogDemoItem(
-                                color: theme.primaryColor,
-                                text: 'Lila (hell)',
-                                onPressed: () {
-                                  themeBloc.selectedTheme
-                                      .add(_buildPurpleLightTheme());
-                                  _storeThemeData("purplelight");
-                                }),
-                            Divider(
-                              height: 10.0,
-                            ),
-                            DialogDemoItem(
-                                color: theme.primaryColor,
-                                text: 'Lila (dunkel)',
-                                onPressed: () {
-                                  themeBloc.selectedTheme
-                                      .add(_buildPurpleDarkTheme());
-                                  _storeThemeData("purpledark");
-                                }),
                           ]));
                 },
               ),
@@ -162,14 +140,6 @@ class SettingsPage extends StatelessWidget {
 
   Design _buildDarkTheme() {
     return dark;
-  }
-
-  Design _buildPurpleDarkTheme() {
-    return purpleDark;
-  }
-
-  Design _buildPurpleLightTheme() {
-    return purpleLight;
   }
 }
 

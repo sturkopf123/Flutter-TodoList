@@ -38,16 +38,6 @@ Future main() async {
         theme = light;
         break;
       }
-    case "purpledark":
-      {
-        theme = purpleDark;
-        break;
-      }
-    case "purplelight":
-      {
-        theme = purpleLight;
-        break;
-      }
     default:
       {
         theme = light;
