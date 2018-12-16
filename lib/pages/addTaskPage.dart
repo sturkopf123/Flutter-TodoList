@@ -153,7 +153,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
                               prefixIcon: Icon(Icons.title),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0))
+                                      Radius.circular(12.0))
                               ),
                               hintText: 'Titel eingeben.')
                         ),
@@ -178,7 +178,7 @@ class _NewTodoPageState extends State<NewTodoPage> {
                               prefixIcon: Icon(Icons.description),
                               border: OutlineInputBorder(
                                   borderRadius: BorderRadius.all(
-                                      Radius.circular(15.0))
+                                      Radius.circular(12.0))
                               ),
                               hintText: 'Beschreibung eingeben.'),
                         ),

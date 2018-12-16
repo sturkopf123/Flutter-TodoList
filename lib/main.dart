@@ -15,6 +15,19 @@ Future main() async {
   Design theme;
   SharedPreferences prefs = await SharedPreferences.getInstance();
   switch (prefs.getString("theme")) {
+    case "custom":
+      {
+        int _primary = prefs.getInt("primary");
+        int _accent = prefs.getInt("accent");
+        bool _brightness = prefs.getBool("brightness");
+        theme = Design("custom",
+            ThemeData(
+                primaryColor: Color(_primary),
+                accentColor: Color(_accent),
+                brightness: _brightness ? Brightness.dark : Brightness.light
+            ));
+        break;
+      }
     case "dark":
       {
         theme = dark;

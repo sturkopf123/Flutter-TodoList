@@ -4,6 +4,7 @@ import 'package:todo_v2/bloc/themesBloc.dart';
 import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/database/database.dart';
 import 'package:todo_v2/themes/custom_themes.dart';
+import 'package:todo_v2/widgets/custom_theme_picker.dart';
 import 'package:todo_v2/widgets/settingsbutton.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -33,6 +34,8 @@ class SettingsPage extends StatelessWidget {
                   showDemoDialog<String>(
                       context: context,
                       child: SimpleDialog(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12.0)),
                           title: const Text('Design auswählen'),
                           children: <Widget>[
                             Padding(
@@ -41,12 +44,10 @@ class SettingsPage extends StatelessWidget {
                                   color: theme.primaryColor,
                                   text: 'Helles Design',
                                   onPressed: () {
-                                    themeBloc.selectedTheme.add(
-                                        _buildLightTheme());
+                                    themeBloc.selectedTheme
+                                        .add(_buildLightTheme());
                                     _storeThemeData("light");
-                                    Navigator.pop(context, "light");
-                                  }
-                              ),
+                                  }),
                             ),
                             Divider(
                               height: 10.0,
@@ -55,12 +56,10 @@ class SettingsPage extends StatelessWidget {
                                 color: theme.primaryColor,
                                 text: 'Dunkles Design',
                                 onPressed: () {
-                                  themeBloc.selectedTheme.add(
-                                      _buildDarkTheme());
+                                  themeBloc.selectedTheme
+                                      .add(_buildDarkTheme());
                                   _storeThemeData("dark");
-                                  Navigator.pop(context, "dark");
-                                }
-                            ),
+                                }),
                             Divider(
                               height: 10.0,
                             ),
@@ -68,12 +67,10 @@ class SettingsPage extends StatelessWidget {
                                 color: theme.primaryColor,
                                 text: 'Lila (hell)',
                                 onPressed: () {
-                                  themeBloc.selectedTheme.add(
-                                      _buildPurpleLightTheme());
+                                  themeBloc.selectedTheme
+                                      .add(_buildPurpleLightTheme());
                                   _storeThemeData("purplelight");
-                                  Navigator.pop(context, "purplelight");
-                                }
-                            ),
+                                }),
                             Divider(
                               height: 10.0,
                             ),
@@ -81,21 +78,19 @@ class SettingsPage extends StatelessWidget {
                                 color: theme.primaryColor,
                                 text: 'Lila (dunkel)',
                                 onPressed: () {
-                                  themeBloc.selectedTheme.add(
-                                      _buildPurpleDarkTheme());
+                                  themeBloc.selectedTheme
+                                      .add(_buildPurpleDarkTheme());
                                   _storeThemeData("purpledark");
-                                  Navigator.pop(context, "purpledark");
-                                }
-                            ),
-                          ]
-                      )
-                  );
+                                }),
+                          ]));
                 },
               ),
               Divider(),
+              CustomDesignButton(themeBloc: themeBloc,),
+              Divider(),
               SettingsButton(
                   icon: Icons.delete,
-                  text: "Datenbank löschen",
+                  text: "Alle Daten löschen",
                   onPressed: () {
                     showDialog(
                         context: context,
@@ -114,6 +109,9 @@ class SettingsPage extends StatelessWidget {
                                   TodoDatabase db = TodoDatabase.get();
                                   db.dropTable();
                                   todoBloc.dropTable();
+                                  _deleteSharedPreferences();
+                                  themeBloc.selectedTheme.add(
+                                      _buildLightTheme());
                                   Navigator.pop(context, "flase");
                                 },
                                 child: Text("Löschen")),
@@ -133,6 +131,7 @@ class SettingsPage extends StatelessWidget {
                         ));
                   },
                   text: "Informationen"),
+
             ],
           ),
         ),
@@ -140,13 +139,17 @@ class SettingsPage extends StatelessWidget {
     );
   }
 
-  void showDemoDialog<T>({ BuildContext context, Widget child }) {
+  _deleteSharedPreferences() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.clear();
+  }
+
+  void showDemoDialog<T>({BuildContext context, Widget child}) {
     showDialog<T>(
       context: context,
       builder: (BuildContext context) => child,
     );
   }
-
 
   _storeThemeData(String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -171,7 +174,7 @@ class SettingsPage extends StatelessWidget {
 }
 
 class DialogDemoItem extends StatelessWidget {
-  const DialogDemoItem({ Key key, this.color, this.text, this.onPressed })
+  const DialogDemoItem({Key key, this.color, this.text, this.onPressed})
       : super(key: key);
 
   final Color color;
@@ -188,7 +191,10 @@ class DialogDemoItem extends StatelessWidget {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(left: 8.0),
-            child: Text(text, style: TextStyle(fontSize: 16.0),),
+            child: Text(
+              text,
+              style: TextStyle(fontSize: 16.0),
+            ),
           ),
         ],
       ),
