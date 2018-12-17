@@ -14,12 +14,13 @@ class CustomDesignButton extends StatefulWidget {
 }
 
 class _CustomDesignButtonState extends State<CustomDesignButton> {
-  Color _initPrimary = Color(0xff4db6ac);
-  Color _initAccent = Color(0xff80cbc4);
-  bool _initBrightness = false;
+  Color _colorPrimary;
+  Color _colorAccent;
+  bool _brightness = false;
 
-  Color _tempPrimary = Colors.white;
-  Color _tempAccent = Colors.black;
+  Color _tempPrimary;
+  Color _tempAccent;
+
   @override
   void initState() {
     super.initState();
@@ -29,25 +30,14 @@ class _CustomDesignButtonState extends State<CustomDesignButton> {
   void _initColors() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (prefs.getInt("primary") != null) {
-      _initPrimary = Color(prefs.getInt("primary"));
+      _colorPrimary = Color(prefs.getInt("primary"));
     }
     if (prefs.getInt("accent") != null) {
-      _initAccent = Color(prefs.getInt("accent"));
+      _colorAccent = Color(prefs.getInt("accent"));
     }
     if (prefs.getBool("brightness") != null) {
-      _initBrightness = prefs.getBool("brightness");
+      _brightness = prefs.getBool("brightness");
     }
-  }
-
-  Widget _getCurrentColor() {
-    return Container(
-      width: 10.0,
-      height: 10.0,
-      decoration: BoxDecoration(
-          color: _initPrimary,
-          shape: BoxShape.rectangle
-      ),
-    );
   }
 
   @override
@@ -78,7 +68,9 @@ class _CustomDesignButtonState extends State<CustomDesignButton> {
                               child: SimpleDialog(
                                 children: <Widget>[
                                   ColorPicker(
-                                    currentColor: _initPrimary,
+                                    currentColor: _colorPrimary != null
+                                        ? _colorPrimary
+                                        : Colors.black,
                                     onSelected: (Color color) {
                                       _tempPrimary = color;
                                     },
@@ -117,7 +109,9 @@ class _CustomDesignButtonState extends State<CustomDesignButton> {
                               child: SimpleDialog(
                                 children: <Widget>[
                                   ColorPicker(
-                                    currentColor: _initAccent,
+                                    currentColor: _colorAccent != null
+                                        ? _colorAccent
+                                        : Colors.white,
                                     onSelected: (Color color) {
                                       _tempAccent = color;
                                     },
@@ -154,7 +148,7 @@ class _CustomDesignButtonState extends State<CustomDesignButton> {
                           children: <Widget>[
                             Text("Dunkler Modus:"),
                             Switch(
-                                value: _initBrightness,
+                                value: _brightness,
                                 onChanged: (bool value) {
                                   setState(() {
                                     _changeBrightness(value);
@@ -196,41 +190,41 @@ class _CustomDesignButtonState extends State<CustomDesignButton> {
   }
 
   Design _buildCustomTheme() {
-    print("$_initPrimary");
-    print(_initAccent);
-    print(_initBrightness);
+    print("$_colorPrimary");
+    print(_colorAccent);
+    print(_brightness);
     return Design(
         "custom",
         ThemeData(
-            primaryColor: _initPrimary,
-            accentColor: _initAccent,
-            brightness: _initBrightness ? Brightness.dark : Brightness.light));
+            primaryColor: _colorPrimary,
+            accentColor: _colorAccent,
+            brightness: _brightness ? Brightness.dark : Brightness.light));
   }
 
   void _changeBrightness(bool bool) {
     setState(() {
-      _initBrightness = bool;
+      _brightness = bool;
     });
   }
 
   void _changePrimary(Color color) {
     setState(() {
-      _initPrimary = color;
+      _colorPrimary = color;
     });
   }
 
   void _changeAccent(Color color) {
     setState(() {
-      _initAccent = color;
+      _colorAccent = color;
     });
   }
 
   _storeCustomThemeData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("${_initPrimary.value}, ${_initAccent.value}, $_initBrightness");
+    print("${_colorPrimary.value}, ${_colorAccent.value}, $_brightness");
     await prefs.setString("theme", "custom");
-    await prefs.setInt("primary", _initPrimary.value);
-    await prefs.setInt("accent", _initAccent.value);
-    await prefs.setBool("brightness", _initBrightness);
+    await prefs.setInt("primary", _colorPrimary.value);
+    await prefs.setInt("accent", _colorAccent.value);
+    await prefs.setBool("brightness", _brightness);
   }
 }
