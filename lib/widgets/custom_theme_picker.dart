@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_colorpicker/material_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_v2/bloc/themesBloc.dart';
+import 'package:todo_v2/widgets/color_picker.dart';
 import 'package:todo_v2/widgets/settingsbutton.dart';
 
 class CustomDesignButton extends StatefulWidget {
@@ -18,6 +18,8 @@ class _CustomDesignButtonState extends State<CustomDesignButton> {
   Color _initAccent = Color(0xff80cbc4);
   bool _initBrightness = false;
 
+  Color _tempPrimary = Colors.white;
+  Color _tempAccent = Colors.black;
   @override
   void initState() {
     super.initState();
@@ -37,6 +39,17 @@ class _CustomDesignButtonState extends State<CustomDesignButton> {
     }
   }
 
+  Widget _getCurrentColor() {
+    return Container(
+      width: 10.0,
+      height: 10.0,
+      decoration: BoxDecoration(
+          color: _initPrimary,
+          shape: BoxShape.rectangle
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SettingsButton(
@@ -46,81 +59,139 @@ class _CustomDesignButtonState extends State<CustomDesignButton> {
         showDialog(
             context: context,
             builder: (BuildContext context) => SimpleDialog(
-                  title: Text("Farben wählen"),
+              title: Padding(
+                padding: const EdgeInsets.only(bottom: 8.0),
+                child: Text("Farben wählen"),
+              ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(
+                          left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
                       child: SimpleDialogOption(
                         child: Text("Hauptfarbe"),
                         onPressed: () {
-                          showDialog(
+                          showDemoDialog(
                               context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                    titlePadding: EdgeInsets.all(0.0),
-                                    contentPadding: EdgeInsets.all(0.0),
-                                    content: SingleChildScrollView(
-                                        child: MaterialPicker(
-                                      onColorChanged: _changePrimary,
-                                      pickerColor: _initPrimary,
-                                      enableLabel: false,
-                                    )));
-                              });
+                              child: SimpleDialog(
+                                children: <Widget>[
+                                  ColorPicker(
+                                    currentColor: _initPrimary,
+                                    onSelected: (Color color) {
+                                      _tempPrimary = color;
+                                    },
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context, false);
+                                          },
+                                          child: Text("Abbrechen")),
+                                      FlatButton(
+                                          onPressed: () {
+                                            _changePrimary(_tempPrimary);
+                                            Navigator.pop(context, false);
+                                          },
+                                          child: Text("Okay"))
+                                    ],
+                                  )
+                                ],
+                              )
+                          );
                         },
                       ),
                     ),
+                    Divider(),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.only(
+                          left: 8.0, right: 8.0, top: 8.0, bottom: 8.0),
                       child: SimpleDialogOption(
                         child: Text("Akzentfarbe"),
                         onPressed: () {
-                          showDialog(
+                          showDemoDialog(
                               context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                    titlePadding: EdgeInsets.all(0.0),
-                                    contentPadding: EdgeInsets.all(0.0),
-                                    content: SingleChildScrollView(
-                                        child: MaterialPicker(
-                                      onColorChanged: _changeAccent,
-                                      pickerColor: _initAccent,
-                                      enableLabel: false,
-                                    )));
-                              });
+                              child: SimpleDialog(
+                                children: <Widget>[
+                                  ColorPicker(
+                                    currentColor: _initAccent,
+                                    onSelected: (Color color) {
+                                      _tempAccent = color;
+                                    },
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      FlatButton(
+                                          onPressed: () {
+                                            Navigator.pop(context, false);
+                                          },
+                                          child: Text("Abbrechen")),
+                                      FlatButton(
+                                          onPressed: () {
+                                            _changeAccent(_tempAccent);
+                                            Navigator.pop(context, false);
+                                          },
+                                          child: Text("Okay"))
+                                    ],
+                                  )
+                                ],
+                              )
+                          );
                         },
                       ),
                     ),
+                    Divider(),
                     Padding(
                       padding:
-                          EdgeInsets.symmetric(vertical: 8.0, horizontal: 24.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text("Dunkler Modus:"),
-                          Switch(
-                              value: _initBrightness,
-                              onChanged: (bool value) {
-                                setState(() {
-                                  _changeBrightness(value);
-                                });
-                              })
-                        ],
+                      EdgeInsets.only(left: 8.0, right: 8.0,),
+                      child: SimpleDialogOption(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text("Dunkler Modus:"),
+                            Switch(
+                                value: _initBrightness,
+                                onChanged: (bool value) {
+                                  setState(() {
+                                    _changeBrightness(value);
+                                  });
+                                })
+                          ],
+                        ),
                       ),
                     ),
-                    FlatButton(
-                        onPressed: () {
-                          widget.themeBloc.selectedTheme
-                              .add(_buildCustomTheme());
-                          _storeCustomThemeData();
-                          Navigator.pop(context, false);
-                        },
-                        child: Text("Speichern"))
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        FlatButton(
+                            onPressed: () {
+                              Navigator.pop(context, false);
+                            },
+                            child: Text("Abbrechen")),
+                        FlatButton(
+                            onPressed: () {
+                              widget.themeBloc.selectedTheme
+                                  .add(_buildCustomTheme());
+                              _storeCustomThemeData();
+                              Navigator.pop(context, false);
+                            },
+                            child: Text("Speichern"))
+                      ],
+                    )
                   ],
                 ));
       },
+    );
+  }
+
+  void showDemoDialog<T>({BuildContext context, Widget child}) {
+    showDialog<T>(
+      context: context,
+      builder: (BuildContext context) => child,
     );
   }
 

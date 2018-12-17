@@ -109,7 +109,6 @@ class SettingsPage extends StatelessWidget {
                         ));
                   },
                   text: "Informationen"),
-
             ],
           ),
         ),
