@@ -3,8 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:todo_v2/bloc/themesBloc.dart';
 import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/database/database.dart';
+import 'package:todo_v2/pages/customThemePage.dart';
 import 'package:todo_v2/themes/custom_themes.dart';
-import 'package:todo_v2/widgets/custom_theme_picker.dart';
+import 'package:todo_v2/widgets/helperWidgets.dart';
 import 'package:todo_v2/widgets/settingsbutton.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -64,7 +65,15 @@ class SettingsPage extends StatelessWidget {
                 },
               ),
               Divider(),
-              CustomDesignButton(themeBloc: themeBloc,),
+              SettingsButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) =>
+                          CustomThemePage(
+                            themeBloc: themeBloc, context: context,)));
+                },
+                text: "Eigenes Design",
+                icon: Icons.color_lens,),
               Divider(),
               SettingsButton(
                   icon: Icons.delete,
@@ -121,13 +130,6 @@ class SettingsPage extends StatelessWidget {
     prefs.clear();
   }
 
-  void showDemoDialog<T>({BuildContext context, Widget child}) {
-    showDialog<T>(
-      context: context,
-      builder: (BuildContext context) => child,
-    );
-  }
-
   _storeThemeData(String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString("theme", name);
@@ -139,34 +141,5 @@ class SettingsPage extends StatelessWidget {
 
   Design _buildDarkTheme() {
     return dark;
-  }
-}
-
-class DialogDemoItem extends StatelessWidget {
-  const DialogDemoItem({Key key, this.color, this.text, this.onPressed})
-      : super(key: key);
-
-  final Color color;
-  final String text;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleDialogOption(
-      onPressed: onPressed,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: Text(
-              text,
-              style: TextStyle(fontSize: 16.0),
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

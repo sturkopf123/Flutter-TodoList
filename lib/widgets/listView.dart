@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/model/Todo.dart';
-import 'package:todo_v2/widgets/smallWidgets.dart';
+import 'package:todo_v2/widgets/helperWidgets.dart';
 
 class CustomListView extends StatefulWidget {
   final List<Todo> items;

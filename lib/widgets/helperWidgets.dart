@@ -122,3 +122,39 @@ Widget getNotificationDate(String dateNotification, String notification) {
     return Container();
   }
 }
+
+void showDemoDialog<T>({BuildContext context, Widget child}) {
+  showDialog<T>(
+    context: context,
+    builder: (BuildContext context) => child,
+  );
+}
+
+class DialogDemoItem extends StatelessWidget {
+  const DialogDemoItem({Key key, this.color, this.text, this.onPressed})
+      : super(key: key);
+
+  final Color color;
+  final String text;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleDialogOption(
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: Text(
+              text,
+              style: TextStyle(fontSize: 16.0),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
