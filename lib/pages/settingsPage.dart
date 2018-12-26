@@ -5,7 +5,6 @@ import 'package:todo_v2/bloc/todoBloc.dart';
 import 'package:todo_v2/database/database.dart';
 import 'package:todo_v2/pages/customThemePage.dart';
 import 'package:todo_v2/themes/custom_themes.dart';
-import 'package:todo_v2/widgets/helperWidgets.dart';
 import 'package:todo_v2/widgets/settingsbutton.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -16,7 +15,6 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -29,51 +27,19 @@ class SettingsPage extends StatelessWidget {
           child: Column(
             children: <Widget>[
               SettingsButton(
-                icon: Icons.color_lens,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              CustomThemePage(
+                                themeBloc: themeBloc,
+                                context: context,
+                              )));
+                },
                 text: "Design",
-                onPressed: () {
-                  showDemoDialog<String>(
-                      context: context,
-                      child: SimpleDialog(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12.0)),
-                          title: const Text('Design auswählen'),
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(top: 12.0),
-                              child: DialogDemoItem(
-                                  color: theme.primaryColor,
-                                  text: 'Helles Design',
-                                  onPressed: () {
-                                    themeBloc.selectedTheme
-                                        .add(_buildLightTheme());
-                                    _storeThemeData("light");
-                                  }),
-                            ),
-                            Divider(
-                              height: 10.0,
-                            ),
-                            DialogDemoItem(
-                                color: theme.primaryColor,
-                                text: 'Dunkles Design',
-                                onPressed: () {
-                                  themeBloc.selectedTheme
-                                      .add(_buildDarkTheme());
-                                  _storeThemeData("dark");
-                                }),
-                          ]));
-                },
+                icon: Icons.color_lens,
               ),
-              Divider(),
-              SettingsButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(
-                      builder: (context) =>
-                          CustomThemePage(
-                            themeBloc: themeBloc, context: context,)));
-                },
-                text: "Eigenes Design",
-                icon: Icons.color_lens,),
               Divider(),
               SettingsButton(
                   icon: Icons.delete,
@@ -97,8 +63,8 @@ class SettingsPage extends StatelessWidget {
                                   db.dropTable();
                                   todoBloc.dropTable();
                                   _deleteSharedPreferences();
-                                  themeBloc.selectedTheme.add(
-                                      _buildLightTheme());
+                                  themeBloc.selectedTheme
+                                      .add(_buildLightTheme());
                                   Navigator.pop(context, "flase");
                                 },
                                 child: Text("Löschen")),
@@ -130,16 +96,7 @@ class SettingsPage extends StatelessWidget {
     prefs.clear();
   }
 
-  _storeThemeData(String name) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString("theme", name);
-  }
-
   Design _buildLightTheme() {
     return light;
-  }
-
-  Design _buildDarkTheme() {
-    return dark;
   }
 }

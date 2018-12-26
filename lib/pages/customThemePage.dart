@@ -28,11 +28,23 @@ class _CustomThemePageState extends State<CustomThemePage> {
   @override
   void initState() {
     super.initState();
-    _primaryColor = Theme.of(widget.context).primaryColor;
-    _accentColor = Theme.of(widget.context).accentColor;
+    _initColors();
+  }
+
+  void _initColors() {
+    _primaryColor = Theme
+        .of(widget.context)
+        .primaryColor;
+    _accentColor = Theme
+        .of(widget.context)
+        .accentColor;
     _checker =
-        Theme.of(widget.context).brightness == Brightness.dark ? true : false;
-    _oldPrimaryColor = Theme.of(widget.context).accentColor;
+    Theme
+        .of(widget.context)
+        .brightness == Brightness.dark ? true : false;
+    _oldPrimaryColor = Theme
+        .of(widget.context)
+        .accentColor;
   }
 
   _storeCustomThemeData() async {
@@ -54,9 +66,10 @@ class _CustomThemePageState extends State<CustomThemePage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
-        title: Text("Test"),
+        title: Text("Design erstellen"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -100,15 +113,10 @@ class _CustomThemePageState extends State<CustomThemePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Hauptfarbe",
-                          style: Theme.of(context).textTheme.body2),
-                      Text("Hauptfarbe für die App.",
-                          style: Theme.of(context).textTheme.body1)
-                    ],
-                  ),
+                  Text("Hauptfarbe", style: Theme
+                      .of(context)
+                      .textTheme
+                      .body2),
                   CircleColor(color: _primaryColor, circleSize: 30.0)
                 ],
               ),
@@ -152,16 +160,11 @@ class _CustomThemePageState extends State<CustomThemePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text("Akzentfarbe",
-                          style: Theme.of(context).textTheme.body2),
-                      Text("Akzentfarbe für die App.",
-                          style: Theme.of(context).textTheme.body1)
-                    ],
-                  ),
-                  CircleColor(color: _accentColor, circleSize: 30.0)
+                  Text("Akzentfarbe", style: Theme
+                      .of(context)
+                      .textTheme
+                      .body2),
+                  CircleColor(color: _accentColor, circleSize: 30.0),
                 ],
               ),
             ),
@@ -171,8 +174,10 @@ class _CustomThemePageState extends State<CustomThemePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text("Dunkler Modus:"),
-                  Center(
-                    child: Switch(
+                  CircleAvatar(
+                    radius: 15.0,
+                    backgroundColor: Colors.transparent,
+                    child: Checkbox(
                         value: _checker,
                         onChanged: (bool val) {
                           setState(() {

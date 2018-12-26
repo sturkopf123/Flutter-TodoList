@@ -145,18 +145,15 @@ class _NewTodoPageState extends State<NewTodoPage> {
                     children: <Widget>[
                       Container(
                         child: TextField(
-                          controller: titleController,
-                          maxLength: 20,
-                          decoration:
-                          InputDecoration(
-                              labelText: "Titel",
-                              prefixIcon: Icon(Icons.title),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(12.0))
-                              ),
-                              hintText: 'Titel eingeben.')
-                        ),
+                            controller: titleController,
+                            maxLength: 20,
+                            decoration: InputDecoration(
+                                labelText: "Titel",
+                                prefixIcon: Icon(Icons.title),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(12.0))),
+                                hintText: 'Titel eingeben.')),
                       ),
                     ],
                   ),
@@ -177,9 +174,8 @@ class _NewTodoPageState extends State<NewTodoPage> {
                               labelText: "Beschreibung",
                               prefixIcon: Icon(Icons.description),
                               border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.all(
-                                      Radius.circular(12.0))
-                              ),
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(12.0))),
                               hintText: 'Beschreibung eingeben.'),
                         ),
                       ),

@@ -6,10 +6,8 @@ import 'package:todo_v2/bloc/todoProvider.dart';
 import 'package:todo_v2/pages/homePage.dart';
 import 'package:todo_v2/themes/custom_themes.dart';
 
-
 /// TODO reschedule notification on undo
 /// TODO localization
-
 
 Future main() async {
   Design theme;
@@ -20,12 +18,12 @@ Future main() async {
         int _primary = prefs.getInt("primary");
         int _accent = prefs.getInt("accent");
         bool _brightness = prefs.getBool("brightness");
-        theme = Design("custom",
+        theme = Design(
+            "custom",
             ThemeData(
                 primaryColor: Color(_primary),
                 accentColor: Color(_accent),
-                brightness: _brightness ? Brightness.dark : Brightness.light
-            ));
+                brightness: _brightness ? Brightness.dark : Brightness.light));
         break;
       }
     case "dark":

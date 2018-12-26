@@ -71,9 +71,8 @@ class DateTimePicker extends StatelessWidget {
   }
 
   Future<Null> selectTime(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
-        context: context,
-        initialTime: selectedTime);
+    final TimeOfDay picked =
+    await showTimePicker(context: context, initialTime: selectedTime);
     if (picked != null && picked != selectedTime) selectTimeChanged(picked);
   }
 
